@@ -20,7 +20,24 @@ public class RunPlayer : NetworkBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+   public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("FloorMap"))
+        {
+            //rb.MovePosition(collision.gameObject.transform.position);
+            transform.parent = collision.gameObject.transform;
+        }
+       
+    }
 
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("FloorMap"))
+        {
+            transform.parent = null;
+        }
+    }
 
     void FixedUpdate()
     {
@@ -36,7 +53,9 @@ public class RunPlayer : NetworkBehaviour
                 animations.SetFloat("Vertical", moveVelocity.y);
             }
             animations.SetFloat("Speed", movementSpeed);
-            rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+            //transform.position += (Vector3)(moveVelocity * Time.fixedDeltaTime);
+            //rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+            rb.velocity = moveVelocity;
         }
         
     }
